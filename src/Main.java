@@ -19,19 +19,13 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.out.println("Sikertelen fájlbeolvasás!");
-            e.printStackTrace();
         }
 
 
-        lines.remove(0);
+        lines.removeFirst();
         for(String line : lines) {
             String[] prLine = line.split(";");
-
-
-            Kolcsonzes elso = new Kolcsonzes(prLine[0], prLine[1], Integer.parseInt(prLine[2]), Integer.parseInt(prLine[3]), Integer.parseInt(prLine[4]), Integer.parseInt(prLine[5]));
             kolcsonzesek.add(new Kolcsonzes(prLine[0], prLine[1], Integer.parseInt(prLine[2]), Integer.parseInt(prLine[3]), Integer.parseInt(prLine[4]), Integer.parseInt(prLine[5])));
-            System.out.print(elso.getName());
-
 
         }
 
@@ -41,7 +35,7 @@ public class Main {
         Scanner userInput = new Scanner(System.in);
         String userInputName =  userInput.nextLine();
 
-        ArrayList<Kolcsonzes> inputKolcs = new ArrayList();
+        ArrayList<Kolcsonzes> inputKolcs = new ArrayList<>();
         for(Kolcsonzes k : kolcsonzesek) {
             if(k.getName().equals(userInputName)) {
                 inputKolcs.add(k);
@@ -67,7 +61,12 @@ public class Main {
                 String[] userInputTimeUnprocessed =  userInputTime.split(":");
                 checkHour = Integer.parseInt(userInputTimeUnprocessed[0]);
                 checkMinute = Integer.parseInt(userInputTimeUnprocessed[1]);
-                break;
+                if((checkMinute<1||checkMinute>60)||(checkHour<0||checkHour>24)) {
+                    System.out.println("Az időpont lehetetlen.");
+                } else {
+                    break;
+                }
+
 
             } catch (Exception e) {
                 System.out.println("Az időpont formátuma helytelen. Kérem, próbálja meg újra.");
@@ -75,7 +74,7 @@ public class Main {
             }
         }
         int kezdIdo, vegIdo, checkIdo = checkMinute+(checkHour*60);
-        ArrayList<Kolcsonzes> vizenKolcs = new ArrayList();
+        ArrayList<Kolcsonzes> vizenKolcs = new ArrayList<>();
         for(Kolcsonzes k : kolcsonzesek) {
             kezdIdo = k.Eperc+(k.Eora*60);
             vegIdo = k.Vperc+(k.Vora*60);
@@ -93,14 +92,33 @@ public class Main {
         for(Kolcsonzes k : kolcsonzesek) {
             kezdIdo = k.Eperc+(k.Eora*60);
             vegIdo = k.Vperc+(k.Vora*60);
+            int turnus;
 
-            double szorzo = Math.floor((vegIdo-kezdIdo)/30)+1;
-            bejovetel = (int) (bejovetel + szorzo * 2400);
+            int diff = vegIdo - kezdIdo;
+            for(turnus = 1; true; turnus++) {
+                if(diff-(turnus*30)>0) {
+                    diff-=(turnus*30);
+                } else {
+                    break;
+                }
+            }
+            if(diff!=0) {
+                turnus++;
+            }
+            bejovetel+=(turnus*2400);
+
+
+            /*
+            int szorzo = (int) (Math.floor((double) (vegIdo - kezdIdo) /30));
+            //if(vegIdo)
+            System.out.println((vegIdo - kezdIdo)%30);
+            bejovetel = bejovetel + szorzo * 2400;
             System.out.println(k.getName() + ", " + kezdIdo + "-" + vegIdo + ": *"  + szorzo);
             for(int x = 0; x != szorzo; x++) {
                 System.out.println(k.getName() + " " + (int) (x+1) + ". turnusa: " + (kezdIdo+(30*x)) + "-kor kezdődött.");
             }
             System.out.println(k.getName() + "-ból/ből " + (int) (szorzo*2400) + " forintot zsebeltünk be. Napi egyenleg: " + bejovetel + "\n");
+            */
         }
         System.out.println("8. feladat: A napi bevétel: " + bejovetel);
 
@@ -112,7 +130,7 @@ public class Main {
                     myWriter.write(k.Eora+":"+k.Eperc+"-"+k.Vora+":"+k.Vperc+" : "+k.getName() + "\n");
                 }
             }
-            myWriter.close();  // must close manually
+            myWriter.close();
             System.out.println("Fájlba írva!");
         } catch (IOException e) {
             System.out.println("Fájl írása sikertelen.");
