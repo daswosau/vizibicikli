@@ -7,7 +7,14 @@ public class Kolcsonzes {
     int Vperc;
 
     public Kolcsonzes(String name, String Jazon, int Eora, int Eperc, int Vora, int Vperc) {
+        this.name = name;
+        this.Jazon = Jazon;
+        this.Eora = Eora;
+        this.Eperc = Eperc;
+        this.Vora = Vora;
+        this.Vperc = Vperc;
     }
+
 
     public String getName() {
         return name;
