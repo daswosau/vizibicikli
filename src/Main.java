@@ -8,7 +8,6 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.printf("Hello and welcome!\n");
         ArrayList<String> lines = new ArrayList<>();
         ArrayList<Kolcsonzes> kolcsonzesek = new ArrayList<>();
 
@@ -16,12 +15,10 @@ public class Main {
 
         try (Scanner myReader = new Scanner(myObj)) {
             while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                //System.out.println(data);
-                lines.add(data);
+                lines.add(myReader.nextLine());
             }
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("Sikertelen fájlbeolvasás!");
             e.printStackTrace();
         }
 
@@ -37,11 +34,6 @@ public class Main {
 
 
         }
-
-        for(Kolcsonzes k : kolcsonzesek) {
-            System.out.println(k.getName());
-        }
-
 
         System.out.println("5. feladat: Napi kölcsönzések száma: " + kolcsonzesek.size());
 
@@ -61,7 +53,7 @@ public class Main {
         } else {
 
             for(Kolcsonzes k : inputKolcs) {
-                System.out.println("    "+k.Eora+":"+k.Eperc+"-"+k.Vora+":"+k.Vperc);
+                System.out.println("    "+String.format("%02d",k.Eora)+":"+String.format("%02d",k.Eperc)+"-"+String.format("%02d",k.Vora)+":"+String.format("%02d",k.Vperc));
             }
         }
 
@@ -93,7 +85,7 @@ public class Main {
         }
         System.out.println("A vizen lévő járművek:");
         for(Kolcsonzes k : vizenKolcs) {
-            System.out.println("    " + k.Eora+":"+k.Eperc+"-"+k.Vora+":"+k.Vperc+" : "+k.getName());
+            System.out.println("    " + String.format("%02d",k.Eora)+":"+String.format("%02d",k.Eperc)+"-"+String.format("%02d",k.Vora)+":"+String.format("%02d",k.Vperc) + " : "+k.getName());
         }
 
 
@@ -120,7 +112,6 @@ public class Main {
                     myWriter.write(k.Eora+":"+k.Eperc+"-"+k.Vora+":"+k.Vperc+" : "+k.getName() + "\n");
                 }
             }
-            //myWriter.write("Files in Java might be tricky, but it is fun enough!");
             myWriter.close();  // must close manually
             System.out.println("Fájlba írva!");
         } catch (IOException e) {
