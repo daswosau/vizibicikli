@@ -90,35 +90,36 @@ public class Main {
 
         int bejovetel = 0;
         for(Kolcsonzes k : kolcsonzesek) {
+            System.out.print(k.getName() + ": ");
             kezdIdo = k.Eperc+(k.Eora*60);
             vegIdo = k.Vperc+(k.Vora*60);
+
             int turnus;
 
-            int diff = vegIdo - kezdIdo;
-            for(turnus = 1; true; turnus++) {
-                if(diff-(turnus*30)>0) {
+            int diffOg = vegIdo - kezdIdo;
+            int diff = diffOg;
+
+            for(turnus = 0; true; turnus++) {
+                if(diffOg-(turnus*30)>0) {
                     diff-=(turnus*30);
                 } else {
+                    if (diffOg-(turnus*30)!=0) {
+                        turnus-=1;
+                    }
+                    if (diff == 30) {
+                        diff = 0;
+                    }
                     break;
                 }
             }
             if(diff!=0) {
                 turnus++;
+                if(diff>30) {
+                    turnus++;
+                }
             }
             bejovetel+=(turnus*2400);
 
-
-            /*
-            int szorzo = (int) (Math.floor((double) (vegIdo - kezdIdo) /30));
-            //if(vegIdo)
-            System.out.println((vegIdo - kezdIdo)%30);
-            bejovetel = bejovetel + szorzo * 2400;
-            System.out.println(k.getName() + ", " + kezdIdo + "-" + vegIdo + ": *"  + szorzo);
-            for(int x = 0; x != szorzo; x++) {
-                System.out.println(k.getName() + " " + (int) (x+1) + ". turnusa: " + (kezdIdo+(30*x)) + "-kor kezdődött.");
-            }
-            System.out.println(k.getName() + "-ból/ből " + (int) (szorzo*2400) + " forintot zsebeltünk be. Napi egyenleg: " + bejovetel + "\n");
-            */
         }
         System.out.println("8. feladat: A napi bevétel: " + bejovetel);
 
